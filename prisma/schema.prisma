@@ -1,0 +1,168 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User  {
+    id String @id @default(uuid())
+    name String @unique
+    phone String @unique 
+    cpf String @unique 
+    hash String  
+    role String
+    isActive Boolean @default(true)
+
+    dayOffs DayOff[]
+
+    operation Operation[]
+
+    management BarberShop[] @relation("Management")
+
+    barberShop BarberShop? @relation(fields: [barberShopId], references: [id])
+    barberShopId String?
+
+    appointments Appointment[] @relation("Barber")
+
+}
+
+model BarberShop {
+    id String @id @default(uuid())
+    name String @unique
+    phone String @unique
+    barberLimit Int @default(10)
+    contractExpiration DateTime
+    address Address @relation(references: [id], fields: [addressId])
+    addressId String @unique
+
+    services Service[]
+
+    manager User @relation(fields: [managerId], references: [id], name: "Management")
+    managerId String
+
+    barbers User[]
+
+    operation Operation[]
+
+    holidays Holiday[]
+
+    appointments Appointment[]
+
+    preferences Preference[]
+}
+
+model Address {
+    id String @unique @default(uuid()) 
+    zipCode String 
+    country String
+    state String
+    city String
+    neighborhood String
+    street String
+    number Int
+    complement String?
+
+    barberShop BarberShop?
+}
+
+model Operation {
+    id String @unique @default(uuid())
+    weekDay Int 
+    openHour Int
+    openMinute Int
+    closeHour Int
+    closeMinute Int
+
+    barberShop BarberShop? @relation(fields: [barberShopId], references: [id])
+    barberShopId String?
+
+    user User? @relation(fields: [userId], references: [id])
+    userId String?
+
+}
+
+model Holiday {
+    id String @unique @default(uuid())
+    date DateTime
+    openHour Int
+    openMinute Int
+    closeHour Int
+    closeMinute Int
+    isClosed Boolean
+
+    barberShop BarberShop @relation(fields: [barberShopId], references: [id])
+    barberShopId String   
+}
+
+model DayOff {
+    id String @unique @default(uuid())
+    date DateTime
+
+    user User @relation(fields: [userId], references: [id])
+    userId String
+}
+
+model Service {
+    id String @unique @default(uuid())
+    name String
+    description String
+    price Float
+    timeInMinutes Int
+    isActive Boolean @default(true)
+
+    barberShop BarberShop @relation(fields: [barberShopId], references: [id])
+    barberShopId String
+
+    appointments Appointment[]
+}
+
+model Appointment {
+    id String @unique @default(uuid())
+    date DateTime
+    startsAtHour Int
+    startsAtMinute Int
+    endsAtHour Int
+    endsAtMinute Int
+    status String
+
+    customer Customer @relation(fields: [customerId], references: [id])
+    customerId String
+
+    barber User @relation(fields: [barberId], references: [id], name: "Barber")
+    barberId String
+
+    barberShop BarberShop @relation(fields: [barberShopId], references: [id])
+    barberShopId String
+
+    service Service @relation(fields: [serviceId], references: [id])
+    serviceId String
+
+}
+
+model Customer {
+    id String @unique @default(uuid())
+    name String
+    cpf String
+    phone String
+
+    appointments Appointment[]
+}
+
+
+model Preference {
+    id String @unique @default(uuid())
+    title String
+    barberShop BarberShop @relation(fields: [barberShopId], references: [id])
+    barberShopId String
+    date DateTime
+    quantity Int
+    price Float
+    totalPrice Float
+    status String
+}
