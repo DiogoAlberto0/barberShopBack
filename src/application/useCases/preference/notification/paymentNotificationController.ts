@@ -36,6 +36,7 @@ export class PaymentNotificationController implements IController {
                     res.status(200).send()
             }
         } catch (error: any) {
+            console.log(error)
             res.status(400).send({
                 message: error.message || 'Erro desconhecido'
             })
