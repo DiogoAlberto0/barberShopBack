@@ -20,6 +20,7 @@ export class PaymentNotificationController implements IController {
 
             // if (!data.id) throw new Error('Invalid event')
 
+            console.log(req.body)
             switch (type) {
                 case 'payment':
                     // const { barberShopId, months, isApproved } = await this.validatePaymentUseCase.execute({ paymentId: data.id })
@@ -31,7 +32,6 @@ export class PaymentNotificationController implements IController {
                     //     })
                     // }
 
-                    console.log(req.body)
                     res.status(200).send()
                 default:
                     res.status(200).send()
