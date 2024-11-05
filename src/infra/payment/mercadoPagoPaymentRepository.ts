@@ -51,14 +51,12 @@ export class MercadoPagoPaymentRepository implements IPaymentRepository {
 
         const items = payment.additional_info?.items
 
-        if (!items || items.length != 0) throw new Error('Falha ao processar pagamento')
-
-        const products = items.map(item => ({
+        const products = items?.map(item => ({
             id: item.id,
             price: item.unit_price,
             quantity: item.quantity,
             title: item.title
-        }))
+        })) || []
 
         return ({
             createdAt,
