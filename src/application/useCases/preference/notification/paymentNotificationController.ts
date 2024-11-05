@@ -16,12 +16,13 @@ export class PaymentNotificationController implements IController {
 
             const { type, data } = req.body
 
-            if (!data) throw new Error('Invalid event')
-
-            if (!data.id) throw new Error('Invalid event')
 
             switch (type) {
                 case 'payment':
+                    if (!data || !data.id) throw new Error('Invalid event')
+
+                    console.log(data)
+
                     const { barberShopId, months, isApproved } = await this.validatePaymentUseCase.execute({ paymentId: data.id })
 
                     if (isApproved) {
