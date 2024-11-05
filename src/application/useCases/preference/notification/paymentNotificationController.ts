@@ -16,8 +16,6 @@ export class PaymentNotificationController implements IController {
 
             const { type, data } = req.body
 
-            console.log(req.body)
-
             if (!data) throw new Error('Invalid event')
 
             if (!data.id) throw new Error('Invalid event')
@@ -38,7 +36,6 @@ export class PaymentNotificationController implements IController {
                     res.status(200).send()
             }
         } catch (error: any) {
-            console.log(error)
             res.status(400).send({
                 message: error.message || 'Erro desconhecido'
             })

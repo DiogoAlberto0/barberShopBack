@@ -26,6 +26,11 @@ export class ValidatePaymentUseCase implements IUseCase<IValidatePaymentInputDTO
         const { products, createdAt, isApproved } = await this.paymentRepository.verifyIfPaymentIsApprovedOrRejected(paymentId)
         const item = products[0]
 
+        console.log({
+            products,
+            createdAt,
+            isApproved
+        })
         const preference = await this.preferenceRepository.findLastBy({
             barberShopId: item.id,
             createdAt,
