@@ -5,6 +5,7 @@ import { barberShopRoutes } from './routes/barberShops';
 import { adminRoutes } from './routes/admin';
 import { serviceRoutes } from './routes/servicesRoutes';
 import { appointmentRoutes } from './routes/appointmentRoutes';
+import dotenv from 'dotenv'
 
 class App {
     public app: Application;
@@ -17,6 +18,9 @@ class App {
 
     private middlewares(): void {
         this.app.use(express.json());
+        if (process.env.ENVIRONMENT != 'TEST') {
+            dotenv.config()
+        }
     }
 
     private routes(): void {

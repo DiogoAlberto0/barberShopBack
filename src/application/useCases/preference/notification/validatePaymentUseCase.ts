@@ -1,4 +1,3 @@
-
 import { IUseCase } from "../../IUseCase.interface";
 import { IPaymentRepository } from "../../../interfaces/payment/paymentRepository.interface";
 import { IPreferenceRepository } from "../../../interfaces/repository/preferenceRepository.interface";
@@ -19,7 +18,7 @@ export class ValidatePaymentUseCase implements IUseCase<IValidatePaymentInputDTO
 
     constructor(
         private paymentRepository: IPaymentRepository,
-        private preferenceRepositry: IPreferenceRepository
+        private preferenceRepository: IPreferenceRepository
     ) { }
 
     async execute({ paymentId }: IValidatePaymentInputDTO): Promise<IValidatePaymentOutputDTO> {
@@ -27,7 +26,7 @@ export class ValidatePaymentUseCase implements IUseCase<IValidatePaymentInputDTO
         const { products, createdAt, isApproved } = await this.paymentRepository.verifyIfPaymentIsApprovedOrRejected(paymentId)
         const item = products[0]
 
-        const preference = await this.preferenceRepositry.findLastBy({
+        const preference = await this.preferenceRepository.findLastBy({
             barberShopId: item.id,
             createdAt,
             price: item.price,
@@ -38,7 +37,7 @@ export class ValidatePaymentUseCase implements IUseCase<IValidatePaymentInputDTO
 
         isApproved ? preference.setApprovedStatus() : preference.setRejectedStatus()
 
-        await this.preferenceRepositry.update(preference)
+        await this.preferenceRepository.update(preference)
 
         return ({
             barberShopId: preference.barberShopId,
