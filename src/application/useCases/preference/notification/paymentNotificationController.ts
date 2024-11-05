@@ -16,6 +16,8 @@ export class PaymentNotificationController implements IController {
 
             const { type, data } = req.body
 
+            console.log(req.body)
+
             if (!data) throw new Error('Invalid event')
 
             if (!data.id) throw new Error('Invalid event')
