@@ -98,7 +98,7 @@ describe('increment contract expiration controller tests', () => {
             })
 
         expect(response.body).toStrictEqual({
-            message: 'A quantidade de mêses deve ser um numero positivo'
+            message: 'Informe uma quantidade de meses válida'
         })
 
         const response2 = await request

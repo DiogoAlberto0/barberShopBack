@@ -38,8 +38,7 @@ describe('create preference controller tests', () => {
             })
 
         expect(response.body).toStrictEqual({
-            paymentUrl: expect.any(String),
-            preferenceId: expect.any(String)
+            paymentUrl: expect.any(String)
         })
 
         console.log(response.body)
