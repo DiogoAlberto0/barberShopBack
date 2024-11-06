@@ -2,9 +2,7 @@ import { IUseCase } from "../../IUseCase.interface";
 import { IPaymentRepository, IProduct } from "../../../interfaces/payment/paymentRepository.interface";
 import { IPreferenceRepository } from "../../../interfaces/repository/preferenceRepository.interface";
 import { Preference } from "../../../../domain/Entities/Preference";
-import { randomUUID } from "crypto";
 import { IBarberShopRepository } from "../../../interfaces/repository/barberShopRepository.interface";
-import { mockManagerRepository } from '../../../../test/unit/vitestMockRepositories/mockManagerRepository';
 import { IManagerRepository } from "../../../interfaces/repository/managerRepository.interface";
 
 interface ICreatePreferenceInputDTO {
@@ -14,7 +12,6 @@ interface ICreatePreferenceInputDTO {
 }
 
 interface ICreatePreferenceOutputDTO {
-    preferenceId: string,
     paymentUrl: string
 }
 export class CreatePreferenceUseCase implements IUseCase<ICreatePreferenceInputDTO, ICreatePreferenceOutputDTO> {
@@ -48,26 +45,23 @@ export class CreatePreferenceUseCase implements IUseCase<ICreatePreferenceInputD
             date: new Date(),
             quantity,
             status: 'PENDING',
-            price: productPrice
+            unitPrice: productPrice
         })
 
         const products: IProduct[] = [
             {
-                id: barberShop.id,
+                id: preference.id,
                 title: preference.title,
                 quantity: preference.quantity,
-                price: preference.price
+                price: preference.unitPrice
             }
         ]
 
-        const { paymentUrl, preferenceId } = await this.paymentRepository.createPreference(products)
-
-        preference.setPreferenceId(preferenceId)
+        const { paymentUrl } = await this.paymentRepository.createPreference(products)
 
         await this.preferenceRepository.save(preference)
 
         return ({
-            preferenceId,
             paymentUrl
         })
     }

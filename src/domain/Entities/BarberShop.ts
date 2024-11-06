@@ -124,8 +124,9 @@ export class BarberShop {
 
     incrementContractExpirationByMonth = (months: number) => {
         if (months < 0) throw new Error('A quantidade de mêses deve ser um numero positivo')
-        const newDate = new Date(this.contractExpirationDate)
-        newDate.setMonth(this.contractExpirationDate.getMonth() + months)
+        const oldDate = new Date(this.contractExpirationDate)
+        const newDate = new Date(oldDate)
+        newDate.setMonth(oldDate.getMonth() + months)
 
         this.contractExpirationDate = newDate
 

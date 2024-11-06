@@ -129,11 +129,11 @@ describe('signin barber controller tests', () => {
         const now = new Date()
 
         const contractExpiration = new Date()
-        contractExpiration.setDate(now.getDate() - 30)
+        contractExpiration.setDate(now.getDate() - 32)
 
         await testPrismaClient.barberShop.update({
             where: {
-                id: validBarberShop.id
+                id: validBarber.barberShop.id
             },
             data: {
                 contractExpiration

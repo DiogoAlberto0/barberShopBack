@@ -10,7 +10,7 @@ const validatePaymentUseCase = new ValidatePaymentUseCase(mockPaymentRepository,
 const validPreference = Preference.build({
     barberShopId: validBarberShop.id,
     title: 'incremento contrato',
-    price: 30,
+    unitPrice: 30,
     quantity: 1,
     date: new Date(),
     status: 'PENDING'
@@ -33,7 +33,7 @@ describe('validate payment use case tests', () => {
             createdAt: new Date(),
             isApproved: true
         });
-        (mockPreferenceRepository.findLastBy as Mock).mockResolvedValue(validPreference);
+        (mockPreferenceRepository.findById as Mock).mockResolvedValue(validPreference);
 
         const response = await validatePaymentUseCase.execute({ paymentId: '123' })
 
@@ -55,7 +55,7 @@ describe('validate payment use case tests', () => {
             createdAt: new Date(),
             isApproved: false
         });
-        (mockPreferenceRepository.findLastBy as Mock).mockResolvedValue(validPreference);
+        (mockPreferenceRepository.findById as Mock).mockResolvedValue(validPreference);
 
         const response = await validatePaymentUseCase.execute({ paymentId: '123' })
 
@@ -77,11 +77,11 @@ describe('validate payment use case tests', () => {
             createdAt: new Date(),
             isApproved: true
         });
-        (mockPreferenceRepository.findLastBy as Mock).mockResolvedValue(undefined);
+        (mockPreferenceRepository.findById as Mock).mockResolvedValue(undefined);
 
         const promise = validatePaymentUseCase.execute({ paymentId: '123' })
 
-        await expect(promise).rejects.toThrow('Falha ao processar pagamento')
+        await expect(promise).rejects.toThrow('Preferencia não encontrada')
 
         expect(mockPreferenceRepository.update).not.toHaveBeenCalledWith(validPreference)
         expect(validPreference.status).toStrictEqual('PENDING')
@@ -89,7 +89,7 @@ describe('validate payment use case tests', () => {
 
     it('should throw if payment isnt approved or rejected', async () => {
         (mockPaymentRepository.verifyIfPaymentIsApprovedOrRejected as Mock).mockRejectedValue(new Error('Pagemeto não encontrado'));
-        (mockPreferenceRepository.findLastBy as Mock).mockResolvedValue(undefined);
+        (mockPreferenceRepository.findById as Mock).mockResolvedValue(undefined);
 
         const promise = validatePaymentUseCase.execute({ paymentId: '123' })
 

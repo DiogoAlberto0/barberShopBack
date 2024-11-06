@@ -4,7 +4,7 @@
   "main": "index.js",   
   "scripts": {
     "test:integration": "dotenv -e .env.test -- npx prisma migrate deploy && vitest --config ./vitest.config.e2e.ts",
-    "test:integration:name": "dotenv -e .env.test -- npx prisma migrate deploy && vitest --config ./vitest.config.e2e.ts --testNamePattern='payment notification controller tests'",
+    "test:integration:name": "dotenv -e .env.test -- npx prisma migrate deploy && vitest --config ./vitest.config.e2e.ts --testNamePattern='add day off controller tests'",
     "test:unit": "vitest --config ./vitest.config.js",
     "dev": "nodemon ./src/main/server.ts",
     "seed": "ts-node ./prisma/seed.ts",

@@ -21,6 +21,8 @@ export class IncrementContractExiprationUseCase implements IUseCase<IncrementCon
         const barberShopFromRepository = await this.barberShopRepository.findById(barberShopId)
         if (!barberShopFromRepository) throw new Error('Estabelecimento não encontrado')
 
+        if (isNaN(months) || months <= 0) throw new Error('Informe uma quantidade de meses válida')
+
         barberShopFromRepository.incrementContractExpirationByMonth(months)
 
         await this.barberShopRepository.update(barberShopFromRepository)

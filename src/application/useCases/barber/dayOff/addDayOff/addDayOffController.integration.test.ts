@@ -71,7 +71,7 @@ describe('add day off controller tests', () => {
             })
 
         expect(response.body).toStrictEqual({
-            message: 'Informe o dia, mês e ano'
+            message: 'Informe dia, mês e ano válidos'
         })
     })
 
@@ -87,7 +87,7 @@ describe('add day off controller tests', () => {
             })
 
         expect(response.body).toStrictEqual({
-            message: 'Informe o dia, mês e ano'
+            message: 'Informe dia, mês e ano válidos'
         })
     })
 
@@ -103,7 +103,7 @@ describe('add day off controller tests', () => {
             })
 
         expect(response.body).toStrictEqual({
-            message: 'Informe o dia, mês e ano'
+            message: 'Informe dia, mês e ano válidos'
         })
     })
 
@@ -119,7 +119,7 @@ describe('add day off controller tests', () => {
             })
 
         expect(response.body).toStrictEqual({
-            message: 'Informe a data em formato numérico'
+            message: 'Informe dia, mês e ano válidos'
         })
     })
 
@@ -135,7 +135,7 @@ describe('add day off controller tests', () => {
             })
 
         expect(response.body).toStrictEqual({
-            message: 'Informe a data em formato numérico'
+            message: 'Informe dia, mês e ano válidos'
         })
     })
 
@@ -151,7 +151,7 @@ describe('add day off controller tests', () => {
             })
 
         expect(response.body).toStrictEqual({
-            message: 'Informe a data em formato numérico'
+            message: 'Informe dia, mês e ano válidos'
         })
     })
 

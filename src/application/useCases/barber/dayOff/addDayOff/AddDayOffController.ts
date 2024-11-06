@@ -17,8 +17,8 @@ export class AddDayOffController implements IController {
             if (!barberId) throw new Error('Informe o id do funcionário')
 
             const { day, month, year } = req.body
-            if (!day || !month || !year) throw new Error('Informe o dia, mês e ano')
-            if (typeof day != 'number' || typeof month != 'number' || typeof year != 'number') throw new Error('Informe a data em formato numérico')
+
+            if (isNaN(day) || isNaN(month) || isNaN(year)) throw new Error('Informe dia, mês e ano válidos')
 
             const managerId = req.headers.id as string
             if (!managerId) throw new Error('Usuário não autorizado')

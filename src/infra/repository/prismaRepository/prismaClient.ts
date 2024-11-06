@@ -219,7 +219,7 @@ export const convertPreferenceFromDBToEntity = (preference: IPreferenceDB): Pref
         title: preference.title,
         barberShopId: preference.barberShopId,
         date: preference.date,
-        price: preference.price,
+        unitPrice: preference.price,
         quantity: preference.quantity,
         status: preference.status,
     })

@@ -22,7 +22,7 @@ describe('create preference use case tests', () => {
     it('shoud be possible to create a new preference', async () => {
         (mockBarberShopRepository.findById as Mock).mockResolvedValue(validBarberShop);
         (mockManagerRepository.findById as Mock).mockResolvedValue(validManager);
-        (mockPaymentRepository.createPreference as Mock).mockResolvedValue({ paymentUrl: 'http://teste.com.br/checkout', preferenceId: '12345' });
+        (mockPaymentRepository.createPreference as Mock).mockResolvedValue({ paymentUrl: 'http://teste.com.br/checkout' });
 
 
         const response = await createPreferenceUseCase.execute({
@@ -32,7 +32,7 @@ describe('create preference use case tests', () => {
         })
 
         expect(response).toStrictEqual({
-            paymentUrl: 'http://teste.com.br/checkout', preferenceId: '12345'
+            paymentUrl: 'http://teste.com.br/checkout'
         })
         expect(mockBarberShopRepository.findById).toHaveBeenCalledWith('123')
         expect(mockManagerRepository.findById).toHaveBeenCalledWith('1234')

@@ -48,7 +48,7 @@ export class MercadoPagoPaymentRepository implements IPaymentRepository {
         if (!payment.date_created) throw new Error('Pagamento inválido')
         const createdAt = new Date(payment.date_created)
 
-
+        payment.order?.id
         const items = payment.additional_info?.items
 
         const products = items?.map(item => ({

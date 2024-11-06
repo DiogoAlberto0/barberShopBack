@@ -1,5 +1,5 @@
 
-import { DayOff } from './DayOff';
+import { randomUUID } from 'node:crypto';
 
 type IPreferenceStatus = 'CANCELED' | 'APPROVED' | 'REJECTED' | 'PENDING'
 const allStatus = ['CANCELED', 'APPROVED', 'REJECTED', 'PENDING']
@@ -9,7 +9,7 @@ type IPreferenceBuildProps = {
     barberShopId: string
     date: Date
     quantity: number
-    price: number
+    unitPrice: number
     status: IPreferenceStatus
 }
 
@@ -19,19 +19,20 @@ type IPreferenceWithProps = {
     barberShopId: string
     date: Date
     quantity: number
-    price: number
+    unitPrice: number
     status: IPreferenceStatus
 }
 export class Preference {
 
-    public id: string = ''
+
 
     private constructor(
+        public id: string,
         public title: string,
         public barberShopId: string,
         public date: Date,
         public quantity: number,
-        public price: number,
+        public unitPrice: number,
         public status: IPreferenceStatus,
         public totalPrice: number
     ) {
@@ -45,16 +46,17 @@ export class Preference {
         date,
         quantity,
         status,
-        price
+        unitPrice
     }: IPreferenceBuildProps) {
         return new Preference(
+            randomUUID(),
             title,
             barberShopId,
             date,
             quantity,
-            price,
+            unitPrice,
             status,
-            price * quantity
+            unitPrice * quantity
         );
     }
 
@@ -65,23 +67,19 @@ export class Preference {
         date,
         quantity,
         status,
-        price
+        unitPrice
     }: IPreferenceWithProps) {
         const preference = new Preference(
+            id,
             title,
             barberShopId,
             date,
             quantity,
-            price,
+            unitPrice,
             status,
-            price * quantity
+            unitPrice * quantity
         )
-        preference.setPreferenceId(id);
         return preference
-    }
-
-    public setPreferenceId(preferenceId: string) {
-        this.id = preferenceId
     }
 
     public setApprovedStatus() {

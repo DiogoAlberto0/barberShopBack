@@ -208,7 +208,7 @@ describe('create service use case tests', () => {
 
         const now = new Date()
         const newContractExpiration = new Date()
-        newContractExpiration.setDate(now.getDate() - 30)
+        newContractExpiration.setDate(now.getDate() - 32)
 
         await testPrismaClient.barberShop.update({
             where: {

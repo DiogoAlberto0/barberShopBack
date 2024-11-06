@@ -91,7 +91,7 @@ describe('increment contract expiration use case tests', () => {
             months: monthsToIncrement
         })
 
-        await expect(result).rejects.toThrow('A quantidade de mêses deve ser um numero positivo')
+        await expect(result).rejects.toThrow('Informe uma quantidade de meses válida')
         expect(mockBarberShopRepository.findById).toBeCalledWith(validBarberShop.id)
         expect(mockBarberShopRepository.update).not.toBeCalledWith(expect.any(BarberShop))
     })

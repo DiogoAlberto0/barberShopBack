@@ -4,18 +4,15 @@ import { convertPreferenceFromDBToEntity, prisma } from "./prismaClient";
 
 
 export class PrismaPreferenceRepository implements IPreferenceRepository {
-    async findLastBy(options: { barberShopId: string; createdAt: Date; title: string; quantity: number; price: number; }): Promise<Preference | undefined> {
+    async findLastPendingBy(options: { barberShopId: string; createdAt: Date; title: string; quantity: number; price: number; }): Promise<Preference | undefined> {
 
         const { barberShopId, createdAt, price, quantity, title } = options
 
         const startDate = new Date(createdAt)
-        startDate.setHours(0)
-        startDate.setMinutes(0)
+        startDate.setHours(0, 0, 0, 0)
 
-        const endDate = new Date(createdAt)
+        const endDate = new Date(startDate)
         endDate.setDate(startDate.getDate() + 1)
-        endDate.setHours(0)
-        endDate.setMinutes(0)
 
         const preference = await prisma.preference.findFirst({
             where: {
@@ -32,8 +29,21 @@ export class PrismaPreferenceRepository implements IPreferenceRepository {
 
         return preference ? convertPreferenceFromDBToEntity(preference) : undefined
     }
-    update(preference: Preference): Promise<void> {
-        throw new Error("Method not implemented.");
+    update = async (preference: Preference): Promise<void> => {
+        await prisma.preference.update({
+            where: {
+                id: preference.id
+            },
+            data: {
+                title: preference.title,
+                date: preference.date,
+                quantity: preference.quantity,
+                status: preference.status,
+                totalPrice: preference.totalPrice,
+                price: preference.unitPrice,
+                barberShopId: preference.barberShopId,
+            }
+        })
     }
     save = async (preference: Preference): Promise<void> => {
         await prisma.preference.create({
@@ -44,7 +54,7 @@ export class PrismaPreferenceRepository implements IPreferenceRepository {
                 quantity: preference.quantity,
                 status: preference.status,
                 totalPrice: preference.totalPrice,
-                price: preference.price,
+                price: preference.unitPrice,
                 barberShopId: preference.barberShopId,
             }
         })

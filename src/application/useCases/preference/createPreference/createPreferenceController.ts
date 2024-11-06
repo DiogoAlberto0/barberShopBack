@@ -22,15 +22,14 @@ export class CreatePreferenceController implements IController {
             const quantity = Number(req.body.monthsToIncrement)
             if (!quantity || isNaN(quantity) || quantity <= 0) throw new Error('A quantidade deve ser um número maior que 0')
 
-            const { paymentUrl, preferenceId } = await this.createPreferenceUseCase.execute({
+            const { paymentUrl } = await this.createPreferenceUseCase.execute({
                 barberShopId,
                 managerId,
                 quantity
             })
 
             res.send({
-                paymentUrl,
-                preferenceId
+                paymentUrl
             })
         } catch (error: any) {
             res.status(400).send({

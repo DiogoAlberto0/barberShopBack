@@ -2,7 +2,6 @@ import { IUseCase } from "../../IUseCase.interface";
 import { IPaymentRepository } from "../../../interfaces/payment/paymentRepository.interface";
 import { IPreferenceRepository } from "../../../interfaces/repository/preferenceRepository.interface";
 
-
 interface IValidatePaymentInputDTO {
     paymentId: string
 }
@@ -13,7 +12,6 @@ interface IValidatePaymentOutputDTO {
     isApproved: boolean
 }
 
-
 export class ValidatePaymentUseCase implements IUseCase<IValidatePaymentInputDTO, IValidatePaymentOutputDTO> {
 
     constructor(
@@ -23,17 +21,18 @@ export class ValidatePaymentUseCase implements IUseCase<IValidatePaymentInputDTO
 
     async execute({ paymentId }: IValidatePaymentInputDTO): Promise<IValidatePaymentOutputDTO> {
 
-        const { products, createdAt, isApproved } = await this.paymentRepository.verifyIfPaymentIsApprovedOrRejected(paymentId)
+        const { products, isApproved } = await this.paymentRepository.verifyIfPaymentIsApprovedOrRejected(paymentId)
         const item = products[0]
 
-        const preference = await this.preferenceRepository.findLastBy({
-            barberShopId: item.id,
-            createdAt,
-            price: item.price,
-            quantity: item.quantity,
-            title: item.title,
+        const preference = await this.preferenceRepository.findById(item.id)
+
+        if (!preference) throw new Error('Preferencia não encontrada')
+
+        if (preference.status != 'PENDING') return ({
+            barberShopId: preference.barberShopId,
+            months: preference.quantity,
+            isApproved: false
         })
-        if (!preference) throw new Error('Falha ao processar pagamento')
 
         isApproved ? preference.setApprovedStatus() : preference.setRejectedStatus()
 
@@ -41,7 +40,7 @@ export class ValidatePaymentUseCase implements IUseCase<IValidatePaymentInputDTO
 
         return ({
             barberShopId: preference.barberShopId,
-            months: item.quantity,
+            months: preference.quantity,
             isApproved
         })
 
